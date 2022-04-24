@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:beacon_scanner/beacon_scanner.dart';
 
 void main() {
@@ -16,34 +15,30 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  static final StreamController<String> _beaconEventsController = StreamController<String>.broadcast();
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _init();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await BeaconScanner.platformVersion ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
+  ///
+  /// Init
+  Future<void> _init() async {
+    BeaconScanner.setDebugLevel(2);
+    BeaconScanner.listenToBeacons(_beaconEventsController);
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+    _beaconEventsController.stream.listen(
+      (data) {
+        print("Beacons DataReceived: " + data);
+      },
+      onError: (error) {
+        debugPrint("[Beacon Service][Monitoring] Error: $error");
+      },
+    );
 
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    await BeaconScanner.startMonitoring();
   }
 
   @override
@@ -54,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Text('Running.. Check console'),
         ),
       ),
     );

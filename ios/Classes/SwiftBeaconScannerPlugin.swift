@@ -36,14 +36,14 @@ public class SwiftBeaconScannerPlugin: NSObject, FlutterPlugin {
 extension SwiftBeaconScannerPlugin: BeaconScannerDelegate {
     
     public func beaconScanner(_ beaconScanner: BeaconScanner, didDiscover beacon: Beacon) {
-        let major = Int("\\\(beacon.identifiers[1])") ?? 0
-        let minor = Int("\\\(beacon.identifiers[2])") ?? 0
+        let major = Int(beacon.identifiers[1], radix: 16) ?? 0
+        let minor = Int(beacon.identifiers[2], radix: 16) ?? 0
 
         let data = "{\n" +
             "  \"uuid\": \"\(beacon.identifier)\",\n" +
-            "  \"txPower\": \"\(beacon.txPower)\",\n" +
-            "  \"rssi\": \"\(beacon.rssi)\",\n" +
-            "  \"distanceMeters\": \"\(beacon.distanceMeters)\",\n" +
+            "  \"txPower\": \(beacon.txPower),\n" +
+            "  \"rssi\": \(beacon.rssi),\n" +
+            "  \"distanceMeters\": \(beacon.distanceMeters),\n" +
             "  \"identifier\": \"\(beacon.identifiers[0])\",\n" +
             "  \"major\": \(major),\n" +
             "  \"minor\": \(minor),\n" +
