@@ -46,7 +46,7 @@ extension SwiftBeaconScannerPlugin: BeaconScannerDelegate {
             "  \"distanceMeters\": \"\(beacon.distanceMeters)\",\n" +
             "  \"identifier\": \"\(beacon.identifiers[0])\",\n" +
             "  \"major\": \(major),\n" +
-            "  \"minor\": \(minor),\n" +
+            "  \"minor\": \(minor)\n" +
         "}"
         eventSink?("\(data)")
     }
