@@ -43,7 +43,7 @@ extension SwiftBeaconScannerPlugin: BeaconScannerDelegate {
             "  \"uuid\": \"\(beacon.identifier)\",\n" +
             "  \"txPower\": \(beacon.txPower),\n" +
             "  \"rssi\": \(beacon.rssi),\n" +
-            "  \"distanceMeters\": \(beacon.distanceMeters),\n" +
+            "  \"distanceMeters\": \"\(beacon.distanceMeters)\",\n" +
             "  \"identifier\": \"\(beacon.identifiers[0])\",\n" +
             "  \"major\": \(major),\n" +
             "  \"minor\": \(minor),\n" +
